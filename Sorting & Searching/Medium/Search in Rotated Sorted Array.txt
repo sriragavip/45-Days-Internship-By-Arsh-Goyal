@@ -1,0 +1,6 @@
+def search(nums, target)
+  i = (0...nums.size).bsearch { |i|
+    (nums[0] <= target) ^ (nums[0] > nums[i]) ^ (target > nums[i])
+  }
+  nums[i || 0] == target ? i : -1
+end

@@ -1,0 +1,50 @@
+class Solution {
+public:
+    bool isPalindrome(ListNode* head) {
+        if( head == NULL || head->next == NULL)
+            return true;
+        //Two pointers
+        ListNode* fast=head;
+        ListNode* slow=head;
+        
+        //Middle of the Linked List
+        while( fast->next != NULL && fast->next->next !=NULL ){
+            slow=slow->next;
+            fast=fast->next->next;
+            
+        }
+        
+        //Reverse the second Half of the Linked List
+        
+        slow->next = reverseList(slow->next);
+        slow = slow->next;
+        
+        //Traversing first and second half of the list to verify the palindrome
+        
+        while(slow !=NULL){
+            if(head->val != slow->val)
+                return false;
+            head=head->next;
+            slow=slow->next;
+        }
+        return true;
+        
+    }
+    
+    // Reverse List
+    ListNode* reverseList(ListNode* head){
+        ListNode* A = NULL;
+        ListNode* next = NULL;
+        
+        while(head!=NULL){
+            next=head->next;
+            head->next=A;
+            A=head;
+            head=next;
+            
+        }
+        return A;
+    } 
+
+    
+};

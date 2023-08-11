@@ -1,0 +1,45 @@
+class Solution {
+public:
+    
+    void build(int si, int ss, int se, vector<int>& arr, vector<int>& seg){
+        if(ss==se){
+            seg[si]=arr[ss]; return;
+        }
+        int mid= ss + (se-ss)/2;
+        build(2*si+1, ss, mid, arr, seg);
+        build(2*si+2, mid+1, se, arr, seg);
+        seg[si]= max(seg[2*si+1], seg[2*si+2]);
+        return;
+    }
+    
+    int query(int si, int ss, int se, int qs, int qe, vector<int>& arr, vector<int>& seg){ // find max in [qs,qe]
+        if(ss>qe || se<qs){ return INT_MIN; }  // complete outside
+        if(ss>=qs && se<=qe){ return seg[si]; } // complete inside
+        int mid= ss + (se-ss)/2;
+        int lft= query(2*si+1, ss, mid, qs, qe, arr, seg);
+        int rht= query(2*si+2, mid+1, se, qs, qe, arr, seg);
+        return max(lft, rht);
+    }
+    
+    int helper(int start, int end, vector<int>& arr, vector<int>& seg, vector<vector<int>>& dp){
+        if(start>=end){ return 0; }
+        if(dp[start][end]!=-1){ return dp[start][end]; }
+        
+        int sum=INT_MAX;
+        for(int k=start; k<end; k++){
+            int lft= helper(start, k, arr, seg, dp); // sum of non-leaf node of subtree [start, k]
+            int rht= helper(k+1, end, arr, seg, dp); // sum of non-leaf node of subtree [k+1, end]
+            int lftMax= query(0, 0, arr.size()-1, start, k, arr, seg); // max leaf node of subtree [start, k]
+            int rhtMax= query(0, 0, arr.size()-1, k+1, end, arr, seg); // min leaf node of subtree [k+1, end]
+            sum= min(sum, lft+rht+(lftMax*rhtMax)); // lftSum + rhtSum + (maxLeafLft*maxLeafRht)
+        }
+        return dp[start][end]=sum;
+    }
+    
+    int mctFromLeafValues(vector<int>& arr) {
+        int n= arr.size(); vector<int> seg(4*n);
+        build(0, 0, n-1, arr, seg);
+        vector<vector<int>> dp(n, vector<int>(n, -1));
+        return helper(0, n-1, arr, seg, dp);
+    }
+};

@@ -1,0 +1,50 @@
+class Solution {
+     public class Graph {
+        private int v;
+        private ArrayList<ArrayList<Integer>> adj;
+
+        public Graph(int v) {
+            this.v = v;
+            this.adj = new ArrayList<ArrayList<Integer>>(this.v);
+            for (int u = 0; u < this.v; u++) {
+                this.adj.add(new ArrayList<>());
+            }
+        }
+
+        public void addEdge(int u, int v) {
+            adj.get(u).add(v);
+            adj.get(v).add(u);
+        }
+        
+        public void postOrder(int u, int parent, int[] count, int[] answer) {
+            for (int v : this.adj.get(u)) {
+                if (v != parent) {
+                    postOrder(v, u, count, answer);
+                    count[u] += count[v];
+                    answer[u] += answer[v] + count[v];
+                }
+            }
+        }
+        public void preOrder(int u, int parent, int[] count, int[] answer, int n) {
+            for (int v : this.adj.get(u)) {
+                if (v != parent) {
+                    answer[v] = answer[u] + (n - count[v]) - count[v];
+                    preOrder(v, u, count, answer, n);
+                }
+            }
+        }
+     }
+ 
+    public int[] sumOfDistancesInTree(int n, int[][] edges) {
+        Graph graph = new Graph(n);
+        for (int[] edge : edges) {
+            graph.addEdge(edge[0], edge[1]);
+        }
+        int[] count = new int[n];
+        Arrays.fill(count, 1);
+        int[] answer = new int[n];
+        graph.postOrder(0, -1, count, answer);
+        graph.preOrder(0, -1, count, answer, n);
+        return answer;
+    }
+}

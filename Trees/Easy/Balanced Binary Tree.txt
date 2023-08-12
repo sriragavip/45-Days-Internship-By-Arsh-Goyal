@@ -1,0 +1,12 @@
+class Solution:
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        def check(root):
+            if not root:
+                return 0
+            lh,rh = check(root.left),check(root.right)
+            if lh==-1 or rh==-1 or abs(lh-rh)>1:
+                return -1
+            else:
+                return max(lh,rh)+1
+        
+        return check(root)!=-1

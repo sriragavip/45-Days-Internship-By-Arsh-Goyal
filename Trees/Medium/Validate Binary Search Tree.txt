@@ -1,0 +1,17 @@
+class Solution {
+public:
+    bool isValidBST(TreeNode* root) {
+        // Base case...
+        if(root == NULL) return true;
+        return check(root, LONG_MIN, LONG_MAX);
+    }
+    bool check(TreeNode* root, long minimum, long maximum){
+        // If root is NULl...
+        if(root == NULL) return true;
+        // If the value of root is less or equal to minimum 
+        // Or If the value of root is greater or equal to maximum
+        if(root->val <= minimum || root->val >= maximum) return false;
+        // Recursively call the function for the left and right subtree...
+        return check(root->left, minimum, root->val) && check(root->right, root->val, maximum);
+    }
+};

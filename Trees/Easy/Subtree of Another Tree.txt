@@ -1,0 +1,16 @@
+class Solution {
+public:
+    bool isSubtree(TreeNode* root, TreeNode* subRoot) {
+        string rootStr = serialize(root);
+        string subRootStr = serialize(subRoot);
+        
+        return rootStr.find(subRootStr) != string::npos;
+    }
+    
+    string serialize(TreeNode* node) {
+        if (!node)
+            return "null";
+        
+        return "#" + to_string(node->val) + " " + serialize(node->left) + " " + serialize(node->right);
+    }
+};

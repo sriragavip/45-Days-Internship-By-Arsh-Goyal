@@ -1,0 +1,39 @@
+class Solution {
+public:
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+        map<int,map<int,vector<int>>>resMap;
+        vector<vector<int>>res;
+        iterate(resMap, 0, 0, root);
+        for(auto colIt : resMap)
+        {
+            vector<int>colNums;
+            for(auto rowIt : colIt.second)
+            {
+                for(auto num : rowIt.second)
+                    colNums.push_back(num);
+            }
+            res.push_back(colNums);
+        }
+        return res;
+    }
+    void iterate(map<int,map<int,vector<int>>>& resMap, int row, int col, TreeNode* ptr)
+    {
+        if(ptr == nullptr)
+            return;
+        resMap[col][row].push_back(ptr->val);
+        int vecSize = resMap[col][row].size();
+        if(vecSize>1)
+        {
+            int idx = vecSize-1;
+            while(idx>0 && resMap[col][row][idx] < resMap[col][row][idx-1])
+            {
+                int temp = resMap[col][row][idx];
+                resMap[col][row][idx] = resMap[col][row][idx-1];
+                resMap[col][row][idx-1] = temp;
+                idx--;
+            }            
+        }
+        iterate(resMap, row+1, col-1, ptr->left);
+        iterate(resMap, row+1, col+1, ptr->right);
+    }
+};

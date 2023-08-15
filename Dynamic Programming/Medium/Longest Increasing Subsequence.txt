@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        vector<int> store = {nums[0]};
+        
+        for (int i = 0; i < nums.size(); ++ i){
+            if (nums[i] > store.back()){
+                store.push_back(nums[i]);
+            }else{
+                auto idx = lower_bound(store.begin(), store.end(), nums[i]) - store.begin();
+                store[idx] = nums[i];
+            }
+        }
+        
+        return store.size();
+    }
+};

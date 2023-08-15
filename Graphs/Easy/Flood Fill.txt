@@ -1,0 +1,19 @@
+class Solution {
+public:
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+        int val = image[sr][sc], m = image.size(), n = image[0].size();
+        changeColor(image, sr, sc, val, color, m, n);
+        return image;
+    }
+
+private:
+    void changeColor(vector<vector<int>>& image, int i, int j, int& val, int& color, int& m, int& n) {
+        if (i < 0 || j < 0 || i >= m || j >= n || image[i][j] == color || image[i][j] != val)
+            return;
+        image[i][j] = color;
+        changeColor(image, i, j-1, val, color, m, n);
+        changeColor(image, i, j+1, val, color, m, n);
+        changeColor(image, i+1, j, val, color, m, n);
+        changeColor(image, i-1, j, val, color, m, n);
+    }
+};

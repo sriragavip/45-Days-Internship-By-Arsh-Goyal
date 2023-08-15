@@ -1,0 +1,30 @@
+class Solution
+{
+    public String findOrder(String [] dict, int N, int K)
+    {
+        
+        
+        // graph formation
+        // adjency list implementation 
+
+
+        ArrayList<Integer> graph[]=new ArrayList[K];
+        for(int i=0;i<K;i++)
+        {
+            graph[i]=new ArrayList<>();
+        }
+        for(int i=0;i<N-1;i++)
+        {
+            String s1=dict[i];
+            String s2=dict[i+1];
+            
+            int n=Math.min(s1.length(),s2.length());
+            for(int j=0;j<n;j++)
+            {
+                if(s1.charAt(j)!=s2.charAt(j))
+                {
+                    graph[s1.charAt(j)-'a'].add(s2.charAt(j)-'a');
+                    break;
+                }
+            }
+        }

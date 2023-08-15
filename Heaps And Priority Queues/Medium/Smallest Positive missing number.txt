@@ -1,0 +1,28 @@
+
+class Solution
+{
+   
+
+public:
+ //Function to find the smallest positive number missing from the array.
+  int missingNumber(int arr[], int n)
+{
+    // Creating a map to store the count of the number present.
+     map<int,int> m;
+     for(int i=0;i<n;i++){
+
+// if the number is present we are incrementing its count.
+       m[arr[i]]++;
+       }
+      for(int i=1;i<=n;i++)
+      {
+      //Checking which number has not been hashed(i.e not present )
+         if(m[i]==0){
+         return i;
+        }
+       }
+
+// if all the number from 1 to n is present we will return n+1...
+          return n+1;
+}
+};

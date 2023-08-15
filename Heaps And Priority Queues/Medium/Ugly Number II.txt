@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        int uglyNumbers[n + 1];  // Array to store ugly numbers
+        uglyNumbers[0] = 0;  // not mandatory, just coz we're using 1-indexing
+        uglyNumbers[1] = 1;  // The first ugly number is 1
+
+        int idx2 = 1, idx3 = 1, idx5 = 1;  // Index pointers for multiples of 2, 3, and 5
+
+        for (int i = 2; i <= n; i++) {
+            // Find the next smallest ugly number among multiples of 2, 3, and 5
+            int nextUgly = min(uglyNumbers[idx2] * 2, min(uglyNumbers[idx3] * 3, uglyNumbers[idx5] * 5));
+            
+            uglyNumbers[i] = nextUgly;  // Store the next ugly number
+            
+            // Update the index pointers based on which multiple was chosen
+            if (nextUgly == uglyNumbers[idx2] * 2) {
+                idx2++;
+            }
+            if (nextUgly == uglyNumbers[idx3] * 3) {
+                idx3++;
+            }
+            if (nextUgly == uglyNumbers[idx5] * 5) {
+                idx5++;
+            }
+        }
+        
+        return uglyNumbers[n];  // Return the nth ugly number
+    }
+};

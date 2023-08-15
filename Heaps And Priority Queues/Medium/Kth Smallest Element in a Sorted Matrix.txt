@@ -1,0 +1,26 @@
+class Solution {
+public:
+    bool helper(vector<vector<int>>& matrix, int k, int mid){
+        int cnt = 0, n = matrix.size();
+        for(auto &v : matrix){
+            auto e = upper_bound(v.begin(), v.end(), mid) - v.begin();
+            cnt+=e;
+        }
+        return cnt < k ? true : false;
+    }
+    
+    int kthSmallest(vector<vector<int>>& matrix, int k) {
+        int n = matrix.size();
+        int l = matrix[0][0], r = matrix[n-1][n-1], ans=0;
+        
+        while(l<r){
+            int mid = l + (r-l)/2;
+            if(helper(matrix,k,mid)){
+                l = mid+1;
+            }else{
+                r = mid;
+            }
+        }
+        return l;
+    }
+};
